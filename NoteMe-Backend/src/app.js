@@ -2,15 +2,18 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 app.use(express.json());
 app.use(cors());
 
 // Models
+const User = require('./models/user')
+const Note = require('./models/note')
 
 // Routes
+app.use('/api/v0/users', require('./routes/users'))
+app.use('/api/v0/notes', require('./routes/notes'))
 
 // Connection
 mongoose
