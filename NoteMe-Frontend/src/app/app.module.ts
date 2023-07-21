@@ -15,9 +15,11 @@ import { SignupComponent } from './views/signup/signup.component';
 import { SigninComponent } from './views/signin/signin.component';
 import { NoteComponent } from './views/note/note.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { ProfileComponent } from './views/profile/profile.component';
+import { ChangePasswordComponent } from './views/change-password/change-password.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SignupComponent, SigninComponent, NoteComponent, ToastComponent],
+  declarations: [AppComponent, HeaderComponent, SignupComponent, SigninComponent, NoteComponent, ToastComponent, ProfileComponent, ChangePasswordComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

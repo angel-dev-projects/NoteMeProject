@@ -1,6 +1,7 @@
 const { check } = require("express-validator");
 const { validateResult } = require("../helpers/validateHelper");
 const User = require("../models/user");
+const bcrypt = require("bcryptjs");
 
 // Validation new user
 const validateCreate = [
@@ -102,6 +103,26 @@ const validateEdit = [
       return true;
     }),
 
+  check("password")
+    .not()
+    .isEmpty()
+    .withMessage("Password is required")
+    .custom(async (value, { req }) => {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const isPasswordValid = await bcrypt.compare(value, user.password);
+      if (!isPasswordValid) {
+        throw new Error(
+          "Invalid password. Please enter your current password to update your profile."
+        );
+      }
+
+      return true;
+    }),
+
   (req, res, next) => {
     validateResult(req, res, next);
   },
@@ -109,6 +130,26 @@ const validateEdit = [
 
 // Validation change password
 const validateChangePassword = [
+  check("currentPassword")
+    .not()
+    .isEmpty()
+    .withMessage("Current password is required")
+    .custom(async (value, { req }) => {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const isPasswordValid = await bcrypt.compare(value, user.password);
+      if (!isPasswordValid) {
+        throw new Error(
+          "Invalid password. Please enter your current password to update your profile."
+        );
+      }
+
+      return true;
+    }),
+
   check("password")
     .notEmpty()
     .withMessage("The new password is required")
@@ -116,7 +157,7 @@ const validateChangePassword = [
       min: 8,
       max: 15,
     })
-    .withMessage("Password is required and must be between 8 and 15 characters")
+    .withMessage("The new password is required and must be between 8 and 15 characters")
     .matches(/[A-Z]/)
     .withMessage("Password must contain at least one uppercase letter")
     .matches(/[a-z]/)

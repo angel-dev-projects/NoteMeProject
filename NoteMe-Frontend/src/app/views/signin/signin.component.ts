@@ -11,7 +11,6 @@ import { ToastService, toastTypes } from 'src/app/services/toast.service';
 })
 export class SigninComponent {
   userForm: FormGroup;
-  errorMessage: string = "";
 
   constructor(
     private authService: AuthService,
@@ -37,10 +36,9 @@ export class SigninComponent {
       },
       (err) => {
         console.log(err);
-        this.errorMessage=err.error;
         this.toastService.initiate({
           title:'Error',
-          content:this.errorMessage
+          content:err.error
         })
       }
     );

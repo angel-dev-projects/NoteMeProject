@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user.interface';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -11,14 +12,14 @@ import { User } from 'src/app/interfaces/user.interface';
 })
 export class SignupComponent implements OnInit {
   userForm: FormGroup;
-  errorMessage: string = '';
 
   ngOnInit() {}
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService
   ) {
     // Create a reactive form for user registration with validations
     this.userForm = this.fb.group({
@@ -43,7 +44,10 @@ export class SignupComponent implements OnInit {
       },
       (err) => {
         console.log(err);
-        this.errorMessage = err.error.errors[0].msg;
+        this.toastService.initiate({
+          title: 'Error',
+          content: err.error.errors[0].msg,
+        });
       }
     );
   }

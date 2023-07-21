@@ -4,6 +4,8 @@ import { SignupComponent } from './views/signup/signup.component';
 import { SigninComponent } from './views/signin/signin.component';
 import { NoteComponent } from './views/note/note.component';
 import { AuthGuard } from './helpers/auth.guard';
+import { ProfileComponent } from './views/profile/profile.component';
+import { ChangePasswordComponent } from './views/change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -23,6 +25,14 @@ const routes: Routes = [
   {
     path: 'signin',
     component: SigninComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+  },
+  {
+    path:'change-password',
+    component:ChangePasswordComponent
   }
 ];
 
