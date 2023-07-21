@@ -1,1 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~bootstrap-icons/font/bootstrap-icons.css';
+
+* {
+  font-family: Georgia, 'Times New Roman', Times, serif
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #F3E5AB;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 90%;
+}
+
+.yellow-background {
+  background-color: #FFD700 !important;
+}
+
+.deep-grey-background {
+  background-color: #333333 !important;
+}
+
+::placeholder {
+  color: #b7b7b7 !important;
+}
+
+.bi {
+  font-size: 1.3rem;
+}
+
+.btn-yellow {
+  background-color: #bea202 !important;
+}

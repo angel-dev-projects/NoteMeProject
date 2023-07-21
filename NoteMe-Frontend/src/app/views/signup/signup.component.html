@@ -1,0 +1,47 @@
+<div class="deep-grey-background d-flex flex-column align-items-center" style="min-height: 100vh;">
+    <div class="d-flex flex-wrap justify-content-center align-items-center">
+        <i class="bi bi-sticky-fill text-white m-2"></i>
+        <h1 class="text-white m-2">NoteMe</h1>
+    </div>
+
+    <p class="text-white">Your app to note anything with anyone</p>
+    <h3 class="text-white mt-3">Sign Up</h3>
+    <form class="rounded" (submit)="signUp()" [formGroup]="userForm">
+        <div class="form-group text-start m-4">
+            <label for="username" class="text-white">Username:</label>
+            <input id="username" type="text" formControlName="username" name="username" placeholder="Username"
+                class="form-control" required>
+            <div class="text-warning"
+                *ngIf="userForm.get('username')?.hasError('required') && userForm.get('username')?.touched">
+                <span>Username is required</span>
+            </div>
+        </div>
+
+        <div class="form-group text-start m-4">
+            <label for="email" class="text-white">Email:</label>
+            <input id="email" type="text" formControlName="email" name="email" placeholder="example@example.com"
+                class="form-control" required>
+            <div class="text-warning"
+                *ngIf="userForm.get('email')?.hasError('required') && userForm.get('email')?.touched">
+                <span>Email is required</span>
+            </div>
+        </div>
+
+        <div class="form-group text-start m-4">
+            <label for="password" class="text-white">Password:</label>
+            <input id="password" type="text" formControlName="password" name="password" placeholder="Example123"
+                class="form-control" required>
+            <div class="text-warning"
+                *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched">
+                <span>Password is required</span>
+            </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-warning">{{ errorMessage }}</div>
+
+        <div class="text-center">
+            <button type="submit" [disabled]="userForm.invalid"
+                class="btn btn-yellow btn-outline-dark text-white">Send</button>
+        </div>
+    </form>
+</div>

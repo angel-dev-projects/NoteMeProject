@@ -1,0 +1,36 @@
+<div class="deep-grey-background d-flex flex-column align-items-center" style="min-height: 100vh;">
+    <div class="d-flex flex-wrap justify-content-center align-items-center">
+        <i class="bi bi-sticky-fill text-white m-2"></i>
+        <h1 class="text-white m-2">NoteMe</h1>
+    </div>
+
+    <p class="text-white">Your app to note anything with anyone</p>
+    <h3 class="text-white mt-3">Sign In</h3>
+    <form class="rounded" (submit)="signIn()" [formGroup]="userForm">
+        <div class="form-group text-start my-3">
+            <label for="email" class="text-white">Email:</label>
+            <input type="email" id="email" formControlName="email" name="email" class="form-control"
+                placeholder="example@gmail.com" required>
+            <div class="text-warning mx-2"
+                *ngIf="userForm.get('email')?.hasError('required') && userForm.get('email')?.touched">
+                <span>Enter an email</span>
+            </div>
+        </div>
+        <div class="form-group text-start my-3">
+            <label for="password" class="text-white">Password:</label>
+            <input type="password" id="password" formControlName="password" name="password" class="form-control"
+                placeholder="Example123" required>
+            <div class="text-warning mx-2"
+                *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched">
+                <span>Enter a password</span>
+            </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-warning">{{ errorMessage }}</div>
+
+        <div class="text-center">
+            <button type="submit" [disabled]="userForm.invalid"
+                class="btn btn-yellow btn-outline-dark text-white">Enter</button>
+        </div>
+    </form>
+</div>
