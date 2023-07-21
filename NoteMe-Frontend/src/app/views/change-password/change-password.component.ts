@@ -27,7 +27,7 @@ export class ChangePasswordComponent implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastService
   ) {
-    // Inicializa el formulario de cambio de contraseña
+    // Initialize the password change form
     this.passwordForm = this.fb.group(
       {
         currentPassword: ['', Validators.required],
@@ -39,17 +39,17 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Obtiene el usuario actual del servicio de autenticación
+    // Get the current user of the authentication service
     this.decodedToken = this.authService.getUser();
   }
 
   changePassword() {
-    // Realiza una solicitud para cambiar la contraseña del usuario actual
+    // Make a request to change the current user's password
     this.userService
       .changePassword(this.decodedToken._id, this.passwordForm.value)
       .subscribe(
         (res) => {
-          // La contraseña se cambió exitosamente, muestra un mensaje de éxito y redirige al usuario a la página principal
+          // The password was changed successfully, show a success message and redirect the user to the main page
           this.toastService.initiate({
             title: 'Password updated',
             content: `Your password has been changed successfully`,
@@ -57,7 +57,7 @@ export class ChangePasswordComponent implements OnInit {
           this.router.navigate(['/profile']);
         },
         (err) => {
-          // Se produjo un error al cambiar la contraseña, muestra un mensaje de error y establece el mensaje de error personalizado
+          // There was an error changing the password, display an error message and set the custom error message
           this.toastService.initiate({
             title: 'Error',
             content: err.error.errors[0].msg,
@@ -69,7 +69,7 @@ export class ChangePasswordComponent implements OnInit {
   passwordMatchValidator: ValidatorFn = (
     control: AbstractControl
   ): { [key: string]: any } | null => {
-    // Validador personalizado para verificar si las contraseñas coinciden
+    // Custom validator to check if passwords match
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');
 
@@ -78,11 +78,11 @@ export class ChangePasswordComponent implements OnInit {
       confirmPassword &&
       password.value !== confirmPassword.value
     ) {
-      // Si las contraseñas no coinciden, se devuelve un objeto con la clave 'passwordMismatch' para indicar el error
+      // If the passwords do not match, an object with the key 'passwordMismatch' is returned to indicate the error
       return { passwordMismatch: true };
     }
 
-    // Si las contraseñas coinciden, se devuelve null para indicar que no hay errores
+    // If the passwords match, null is returned to indicate that there are no errors
     return null;
   };
 }
