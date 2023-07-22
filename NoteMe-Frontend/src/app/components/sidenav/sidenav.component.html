@@ -1,29 +1,28 @@
 <mat-drawer-container class="sidenav-container" autosize>
-    <mat-drawer #drawer class="sidenav bg-dark px-2" mode="side">
-        <div class="sidenav-scroll">
-            <div class="card my-2 bg-dark" *ngFor="let note of userNotes">
-                <div class="card-header" [ngStyle]="{ 'background-color': note.color }">
+    <mat-drawer #drawer class="sidenav bg-dark" mode="side">
+        <div class="card bg-dark m-2" *ngFor="let note of userNotes">
+            <div class="card-header" [ngStyle]="{ 'background-color': note.color }">
 
-                </div>
-                <div class="card-body text-white">
-                    <h5 class="card-title d-flex">{{ note.title }}
+            </div>
+            <div class="card-body text-white">
+                <h5 class="card-title d-flex">{{ note.title | slice:0:30}}
 
-                    </h5>
-                    <div class="card-text d-flex justify-content-between">
-                        <div>
-                            {{ note.content | slice:0:50}}
-                        </div>
-                        <div class="d-flex text-end justify-content-end">
-                            <button class="btn icon-btn text-white p-0 mx-1">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button class="btn icon-btn text-white p-0 mx-1">
-                                <i class="bi bi-trash3-fill"></i>
-                            </button>
-                        </div>
+                </h5>
+                <div class="card-text d-flex justify-content-between">
+                    <div>
+                        {{ note.content | slice:0:15}}
+                    </div>
+                    <div class="d-flex text-end justify-content-end">
+                        <button class="btn icon-btn text-white p-0 mx-1">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn icon-btn text-white p-0 mx-1">
+                            <i class="bi bi-trash3-fill"></i>
+                        </button>
                     </div>
                 </div>
             </div>
+
         </div>
 
     </mat-drawer>

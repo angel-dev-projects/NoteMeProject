@@ -6,6 +6,7 @@
 .sidenav {
   height: 100%;
   width: 25%;
+  overflow-y: auto;
 }
 
 .sidenav-content {
@@ -22,6 +23,5 @@ div>button>i {
 }
 
 .sidenav-scroll {
-  max-height: 80vh;
-  overflow-y: auto;
+
 }
