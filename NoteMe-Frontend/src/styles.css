@@ -35,3 +35,11 @@
 .btn-yellow {
   background-color: #bea202 !important;
 }
+
+.btn {
+  transition: transform 0.2s ease-in-out !important;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}

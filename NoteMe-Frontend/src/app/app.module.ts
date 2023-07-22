@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './shared/header/header.component';
-import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,9 +16,23 @@ import { NoteComponent } from './views/note/note.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { ProfileComponent } from './views/profile/profile.component';
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatButtonModule} from '@angular/material/button';
+import { NgIf } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SignupComponent, SigninComponent, NoteComponent, ToastComponent, ProfileComponent, ChangePasswordComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    SignupComponent,
+    SigninComponent,
+    NoteComponent,
+    ToastComponent,
+    ProfileComponent,
+    ChangePasswordComponent,
+    SidenavComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,6 +41,9 @@ import { ChangePasswordComponent } from './views/change-password/change-password
     BrowserAnimationsModule,
     ReactiveFormsModule,
     SpinnerModule,
+    MatSidenavModule,
+    MatButtonModule,
+    NgIf
   ],
   providers: [
     AuthGuard,

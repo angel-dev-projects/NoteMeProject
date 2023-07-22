@@ -211,7 +211,6 @@ router.put(
   }
 );
 
-
 // Endpoint to create a new note associated with a user
 router.post("/notes/:id", verifyToken, async (req, res) => {
   try {
@@ -278,7 +277,7 @@ router.get("/users/:userId/notes", verifyToken, async (req, res) => {
     // Get all notes associated with the user
     const notes = await Note.find({ _id: { $in: user.notes } });
 
-    res.status(200).json({ notes });
+    res.status(200).json(notes);
   } catch (error) {
     res.status(500).json({ message: "Error getting notes", error });
   }

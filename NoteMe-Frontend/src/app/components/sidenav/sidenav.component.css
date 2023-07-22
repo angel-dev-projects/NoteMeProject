@@ -1,0 +1,27 @@
+.sidenav-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidenav {
+  height: 100%;
+  width: 25%;
+}
+
+.sidenav-content {
+  flex: 1;
+}
+
+div>button>i {
+  font-size: 0.9rem;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.sidenav-scroll {
+  max-height: 80vh;
+  overflow-y: auto;
+}
