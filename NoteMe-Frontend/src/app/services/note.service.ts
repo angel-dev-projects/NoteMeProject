@@ -12,6 +12,7 @@ export class NoteService {
   constructor(private http: HttpClient) {}
 
   getNotes(id_user: string): Observable<Note[]> {
+    // Make an HTTP GET request to the server to get all user's notes
     return this.http.get<Note[]>(`${this.apiUrl}users/${id_user}/notes`);
   }
 
@@ -21,5 +22,10 @@ export class NoteService {
       `${this.apiUrl}users/${id_user}/notes/${id_note}`,
       note
     );
+  }
+
+  deleteNote(id_user: string, id_note: string) {
+    // Make an HTTP DELETE request to the server to delete an user's note
+    return this.http.delete(`${this.apiUrl}users/${id_user}/notes/${id_note}`);
   }
 }
