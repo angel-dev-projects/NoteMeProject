@@ -12,8 +12,7 @@ const User = require('./models/user')
 const Note = require('./models/note')
 
 // Routes
-app.use('/api/v0/users', require('./routes/users'))
-app.use('/api/v0/notes', require('./routes/notes'))
+app.use('/api/v0', require('./routes/index'))
 
 // Connection
 mongoose

@@ -4,12 +4,16 @@ const noteSchema = new Schema(
   {
     title: {
       type: String,
-      default: "Note with no title"
+      default: "Note with no title",
     },
     content: {
       type: String,
-      default: "Note with no content"
+      default: "Note with no content",
     },
+    color: {
+      type: String,
+      default: "#fffffff",
+    }
   },
   {
     timestamps: true,

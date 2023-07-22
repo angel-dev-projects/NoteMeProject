@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const Note = require("./note");
 
 var bcrypt = require("bcryptjs");
 var SALT_WORK_FACTOR = 10;
@@ -24,6 +25,14 @@ const userSchema = new Schema(
       enum: ["admin", "restricted"],
       default: "restricted",
     },
+    notes: [
+      {
+        note: {
+          type: Schema.Types.ObjectId,
+          ref: "Note",
+        },
+      },
+    ],
   },
   {
     timestamps: true,
