@@ -18,8 +18,11 @@ import { ProfileComponent } from './views/profile/profile.component';
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
+import { ColorPickerModule } from 'ngx-color-picker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import { NgIf } from '@angular/common';
     SpinnerModule,
     MatSidenavModule,
     MatButtonModule,
-    NgIf
+    NgIf,
+    ColorPickerModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [
     AuthGuard,

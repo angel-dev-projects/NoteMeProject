@@ -1,1 +1,31 @@
-<app-sidenav></app-sidenav>
+<div class="note-container deep-grey-background">
+    <app-sidenav></app-sidenav>
+    <div *ngIf="!noteId" class="text-white">
+        <p><i class="bi bi-arrow-left"></i> Select one of your notes here</p>
+    </div>
+    <div *ngIf="noteId" class="note-content mt-3">
+        <form (submit)="saveNote()" [formGroup]="noteForm" class="d-flex flex-wrap">
+            <div class="d-flex flex-column">
+                <mat-form-field>
+                    <mat-label for="title">Title</mat-label>
+                    <input matInput type="text" id="title" formControlName="title" name="title">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="content">Content</mat-label>
+                    <textarea matInput id="content" name="content" rows="15" formControlName="content"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div class="d-flex flex-column align-items-start px-2">
+                <div id="note-color" class="mb-2" [(colorPicker)]="this.noteForm.value.color"
+                    [style.background]="this.noteForm.value.color" formControlName="color" name="color"
+                    data-bs-toggle="tooltip" title="Color picker"></div>
+
+                <button type="submit" class="btn yellow-background btn-outline-dark" data-bs-toggle="tooltip"
+                    title="Save">
+                    <i class="bi bi-save-fill"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

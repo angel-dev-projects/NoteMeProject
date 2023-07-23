@@ -11,6 +11,10 @@ export class NoteService {
 
   constructor(private http: HttpClient) {}
 
+  getNoteById(id_user: string, id_note: string) {
+    return this.http.get<Note>(`${this.apiUrl}/notes/${id_user}/${id_note}`);
+  }
+
   getNotes(id_user: string): Observable<Note[]> {
     // Make an HTTP GET request to the server to get all user's notes
     return this.http.get<Note[]>(`${this.apiUrl}users/${id_user}/notes`);

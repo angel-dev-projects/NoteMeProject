@@ -14,6 +14,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'note/:id',
+    component: NoteComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'note',
     component: NoteComponent,
     canActivate: [AuthGuard],

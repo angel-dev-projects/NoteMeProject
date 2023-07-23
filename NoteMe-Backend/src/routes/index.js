@@ -255,6 +255,45 @@ router.post("/notes/:id", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/notes/:userId/:noteId", verifyToken, async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const noteId = req.params.noteId;
+
+    // Check if the user is correct
+    if (userId !== req.user._id) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    // Check if the user exists in the database
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the specific note by its ID in the notes collection
+    const note = await Note.findById(noteId);
+
+    // Check if the note exists
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+
+    // Check if the note belongs to the user
+    if (!user.notes.find((note) => note._id.equals(noteId))) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: Note does not belong to this user" });
+    }
+
+    res.json(note);
+  } catch (error) {
+    res.status(500).json({ message: "Error getting the note", error });
+  }
+});
+
 // Endpoint to get all notes of an user
 router.get("/users/:userId/notes", verifyToken, async (req, res) => {
   try {
