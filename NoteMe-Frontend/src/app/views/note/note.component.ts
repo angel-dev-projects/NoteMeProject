@@ -4,7 +4,6 @@ import { Note } from 'src/app/interfaces/note.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { NoteService } from 'src/app/services/note.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
 declare var bootstrap: any;
 
 @Component({
@@ -15,22 +14,19 @@ declare var bootstrap: any;
 export class NoteComponent implements OnInit, AfterViewInit {
   noteId: string | null;
   decodedToken: any;
-  noteForm: FormGroup;
+  noteTitle: string = '';
+  noteContent: string = '';
+  noteColor: string = '#ffffff';
+  noteIsFavorite: boolean = false;
+  noteIsPrivate: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private noteService: NoteService,
     private authService: AuthService,
-    private toastService: ToastService,
-    private fb: FormBuilder
+    private toastService: ToastService
   ) {
-    this.noteForm = this.fb.group({
-      title: '',
-      content: '',
-      color: '#ffffff',
-    });
-
     this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
@@ -50,12 +46,32 @@ export class NoteComponent implements OnInit, AfterViewInit {
     });
   }
 
+  makeFavorite() {
+    if (this.noteIsFavorite == true) {
+      this.noteIsFavorite = false;
+    } else {
+      this.noteIsFavorite = true;
+    }
+  }
+
+  makePrivate() {
+    if (this.noteIsPrivate == true) {
+      this.noteIsPrivate = false;
+    } else {
+      this.noteIsPrivate = true;
+    }
+  }
+
   saveNote() {
     const note: Note = {
-      title: this.noteForm.value.title,
-      content: this.noteForm.value.content,
-      color: this.noteForm.value.color,
+      title: this.noteTitle,
+      content: this.noteContent,
+      color: this.noteColor,
+      favorite: this.noteIsFavorite,
+      private: this.noteIsPrivate,
     };
+
+    console.log(note);
 
     if (this.noteId !== null) {
       // update note
@@ -101,11 +117,11 @@ export class NoteComponent implements OnInit, AfterViewInit {
         .getNoteById(this.decodedToken._id, this.noteId)
         .subscribe(
           (note) => {
-            this.noteForm.setValue({
-              title: note.title,
-              content: note.content,
-              color: note.color,
-            });
+            this.noteTitle = note.title;
+            this.noteContent = note.content;
+            this.noteColor = note.color;
+            this.noteIsFavorite = note.favorite;
+            this.noteIsPrivate = note.private;
           },
           (error) => {
             console.log('Error fetching note details:', error);

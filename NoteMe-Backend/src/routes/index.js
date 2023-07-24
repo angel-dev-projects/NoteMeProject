@@ -231,13 +231,15 @@ router.post("/notes/:id", verifyToken, async (req, res) => {
     }
 
     // Get the note data from the request body
-    const { title, content, color } = req.body;
+    const { title, content, color, favorite, private } = req.body;
 
     // Create the new note
     const newNote = new Note({
       title,
       content,
       color,
+      favorite,
+      private,
     });
 
     // Assign the new note to the user
@@ -327,7 +329,7 @@ router.put("/users/:userId/notes/:noteId", verifyToken, async (req, res) => {
   try {
     const userId = req.params.userId;
     const noteId = req.params.noteId;
-    const { title, content, color } = req.body;
+    const { title, content, color, favorite, private } = req.body;
 
     // Check if the user is correct
     if (userId !== req.user._id) {
@@ -347,7 +349,13 @@ router.put("/users/:userId/notes/:noteId", verifyToken, async (req, res) => {
     // Find the user's specific note by its ID
     const note = await Note.findByIdAndUpdate(
       noteId,
-      { title, content, color },
+      {
+        title,
+        content,
+        color,
+        favorite,
+        private
+      },
       { new: true }
     );
 

@@ -13,7 +13,15 @@ const noteSchema = new Schema(
     color: {
       type: String,
       default: "#fffffff",
-    }
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+    private: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

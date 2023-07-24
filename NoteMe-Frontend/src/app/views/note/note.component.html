@@ -1,27 +1,32 @@
-<div class="note-container deep-grey-background">
-    <div class="note-content mt-3">
-        <form (submit)="saveNote()" [formGroup]="noteForm" class="d-flex flex-wrap">
-            <div class="d-flex flex-column">
-                <mat-form-field>
-                    <mat-label for="title">Title</mat-label>
-                    <input matInput type="text" id="title" formControlName="title" name="title">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="content">Content</mat-label>
-                    <textarea matInput id="content" name="content" rows="15" formControlName="content"></textarea>
-                </mat-form-field>
-            </div>
+<div class="note-container deep-grey-background d-flex flex-column align-items-center">
+    <form (submit)="saveNote()" class="w-50">
+        <div class="d-flex flex-column mt-2">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div id="note-color" class="mb-2" [(colorPicker)]="this.noteColor" [style.background]="this.noteColor"
+                    [(ngModel)]="noteColor" name="color" data-bs-toggle="tooltip" title="Color picker"></div>
 
-            <div class="d-flex flex-column align-items-start px-2">
-                <div id="note-color" class="mb-2" [(colorPicker)]="this.noteForm.value.color"
-                    [style.background]="this.noteForm.value.color" formControlName="color" name="color"
-                    data-bs-toggle="tooltip" title="Color picker"></div>
+                <div class="d-flex text-end justify-content-end">
+                    <i class="bi text-white" [class.bi-unlock]="!noteIsPrivate" [class.bi-lock-fill]="noteIsPrivate"
+                        data-bs-toggle="tooltip" title="Mark as private" (click)="makePrivate()"></i>
 
-                <button type="submit" class="btn yellow-background btn-outline-dark" data-bs-toggle="tooltip"
-                    title="Save">
-                    <i class="bi bi-save-fill"></i>
-                </button>
+                    <i class="bi text-white mx-2" [class.bi-heart]="!noteIsFavorite"
+                        [class.bi-heart-fill]="noteIsFavorite" data-bs-toggle="tooltip" title="Mark as favorite"
+                        (click)="makeFavorite()"></i>
+
+                    <button type="submit" class="btn p-0" data-bs-toggle="tooltip" title="Save">
+                        <i class="bi bi-check2 text-white"></i>
+                    </button>
+                </div>
             </div>
-        </form>
-    </div>
+            <mat-form-field appearance="outline" color="warn">
+                <mat-label for="title" class="text-white">Title</mat-label>
+                <input matInput class="text-white" type="text" id="title" [(ngModel)]="noteTitle" name="title">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="warn">
+                <mat-label for="content" class="text-white">Content</mat-label>
+                <textarea matInput class="text-white" id="content" name="content" rows="13"
+                    [(ngModel)]="noteContent"></textarea>
+            </mat-form-field>
+        </div>
+    </form>
 </div>
