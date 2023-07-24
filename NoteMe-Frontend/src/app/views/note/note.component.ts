@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Note } from 'src/app/interfaces/note.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { NoteService } from 'src/app/services/note.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-declare var bootstrap: any; 
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-note',
@@ -13,12 +13,13 @@ declare var bootstrap: any;
   styleUrls: ['./note.component.css'],
 })
 export class NoteComponent implements OnInit, AfterViewInit {
-  noteId!: string;
+  noteId: string | null;
   decodedToken: any;
   noteForm: FormGroup;
 
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     private noteService: NoteService,
     private authService: AuthService,
     private toastService: ToastService,
@@ -27,19 +28,75 @@ export class NoteComponent implements OnInit, AfterViewInit {
     this.noteForm = this.fb.group({
       title: '',
       content: '',
-      color: '',
+      color: '#ffffff',
     });
+
+    this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
   ngOnInit() {
     // Get the current user of the authentication service
     this.decodedToken = this.authService.getUser();
 
-    // Obtener el ID de la nota de la URL usando ActivatedRoute
-    this.route.params.subscribe((params) => {
-      this.noteId = params['id'];
+    this.isEdit();
+  }
 
-      // Cargar los detalles de la nota que se desea editar
+  ngAfterViewInit() {
+    const tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    tooltipTriggerList.map((tooltipTriggerEl: HTMLElement) => {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
+
+  saveNote() {
+    const note: Note = {
+      title: this.noteForm.value.title,
+      content: this.noteForm.value.content,
+      color: this.noteForm.value.color,
+    };
+
+    if (this.noteId !== null) {
+      // update note
+      this.noteService
+        .updateNote(note, this.noteId, this.decodedToken._id)
+        .subscribe(
+          (res) => {
+            this.toastService.initiate({
+              title: 'Note updated',
+              content: `Note updated successfully`,
+            });
+          },
+          (error) => {
+            this.toastService.initiate({
+              title: 'Error',
+              content: `Error during updating the note`,
+            });
+          }
+        );
+    } else {
+      // new note
+      this.noteService.newNote(this.decodedToken._id, note).subscribe(
+        (res) => {
+          this.toastService.initiate({
+            title: 'Note created',
+            content: `Note created successfully`,
+          });
+          this.router.navigate(['/dashboard']);
+        },
+        (error) => {
+          this.toastService.initiate({
+            title: 'Error',
+            content: `Error during creating the note`,
+          });
+        }
+      );
+    }
+  }
+
+  isEdit() {
+    if (this.noteId !== null) {
       this.noteService
         .getNoteById(this.decodedToken._id, this.noteId)
         .subscribe(
@@ -54,41 +111,6 @@ export class NoteComponent implements OnInit, AfterViewInit {
             console.log('Error fetching note details:', error);
           }
         );
-    });
-  }
-
-  
-  ngAfterViewInit() {
-    const tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    tooltipTriggerList.map((tooltipTriggerEl: HTMLElement) => {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-  }
-
-  saveNote() {
-    const updatedNote: Note = {
-      _id: '',
-      title: this.noteForm.value.title,
-      content: this.noteForm.value.content,
-      color: this.noteForm.value.color,
-    };
-    this.noteService
-      .updateNote(updatedNote, this.noteId, this.decodedToken._id)
-      .subscribe(
-        (res) => {
-          this.toastService.initiate({
-            title: 'Note updated',
-            content: `Note updated successfully`,
-          });
-        },
-        (error) => {
-          this.toastService.initiate({
-            title: 'Error',
-            content: `Error during updating the note`,
-          });
-        }
-      );
+    }
   }
 }

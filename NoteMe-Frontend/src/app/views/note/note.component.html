@@ -1,9 +1,5 @@
 <div class="note-container deep-grey-background">
-    <app-sidenav></app-sidenav>
-    <div *ngIf="!noteId" class="text-white">
-        <p><i class="bi bi-arrow-left"></i> Select one of your notes here</p>
-    </div>
-    <div *ngIf="noteId" class="note-content mt-3">
+    <div class="note-content mt-3">
         <form (submit)="saveNote()" [formGroup]="noteForm" class="d-flex flex-wrap">
             <div class="d-flex flex-column">
                 <mat-form-field>

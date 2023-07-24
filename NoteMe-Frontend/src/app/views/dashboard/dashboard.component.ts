@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Note } from 'src/app/interfaces/note.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { NoteService } from 'src/app/services/note.service';
@@ -6,14 +7,16 @@ import { ToastService } from 'src/app/services/toast.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.css'],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
 })
-export class SidenavComponent implements OnInit {
-  showFiller = false;
+export class DashboardComponent implements OnInit {
   decodedToken: any;
   userNotes: Note[] = [];
+  pageSlice: Note[] = [];
+  pageSize = 9;
+  pageIndex = 0;
 
   constructor(
     private noteService: NoteService,
@@ -28,6 +31,7 @@ export class SidenavComponent implements OnInit {
     this.noteService.getNotes(this.decodedToken._id).subscribe(
       (res) => {
         this.userNotes = res;
+        this.updatePageSlice();
       },
       (error) => {
         console.log('Error fetching notes:', error);
@@ -35,7 +39,19 @@ export class SidenavComponent implements OnInit {
     );
   }
 
-  deleteNote(id_note: string) {
+  updatePageSlice() {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.pageSlice = this.userNotes.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePageSlice();
+  }
+
+  deleteNote(id_note: string | undefined) {
     Swal.fire({
       title: 'Delete note',
       text: 'Are you sure you want to delete this note?',
@@ -51,6 +67,7 @@ export class SidenavComponent implements OnInit {
             );
             if (index !== -1) {
               this.userNotes.splice(index, 1);
+              this.updatePageSlice();
             }
             this.toastService.initiate({
               title: 'Note deleted',

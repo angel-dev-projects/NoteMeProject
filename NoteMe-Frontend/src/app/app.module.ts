@@ -16,13 +16,12 @@ import { NoteComponent } from './views/note/note.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { ProfileComponent } from './views/profile/profile.component';
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
 import { ColorPickerModule } from 'ngx-color-picker';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     ToastComponent,
     ProfileComponent,
     ChangePasswordComponent,
-    SidenavComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,12 +43,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     SpinnerModule,
-    MatSidenavModule,
     MatButtonModule,
-    NgIf,
     ColorPickerModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatPaginatorModule
   ],
   providers: [
     AuthGuard,

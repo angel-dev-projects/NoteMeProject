@@ -6,20 +6,21 @@ import { NoteComponent } from './views/note/note.component';
 import { AuthGuard } from './helpers/auth.guard';
 import { ProfileComponent } from './views/profile/profile.component';
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: '/note',
-    pathMatch: 'full',
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
   },
   {
-    path: 'note/:id',
+    path: 'edit-note/:id',
     component: NoteComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'note',
+    path: 'new-note',
     component: NoteComponent,
     canActivate: [AuthGuard],
   },
@@ -36,9 +37,14 @@ const routes: Routes = [
     component: ProfileComponent,
   },
   {
-    path:'change-password',
-    component:ChangePasswordComponent
-  }
+    path: 'change-password',
+    component: ChangePasswordComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/dashboard',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
