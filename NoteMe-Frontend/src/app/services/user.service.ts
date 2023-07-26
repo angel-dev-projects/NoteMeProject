@@ -23,6 +23,7 @@ export class UserService {
   }
 
   changePassword(id: string, passwords: Object) {
+    // Make an HTTP PUT request to the server to update a user's password
     return this.http.put(
       `${this.apiUrl}users/change-password/${id}`,
       passwords
@@ -30,6 +31,7 @@ export class UserService {
   }
 
   searchUser(username: string): Observable<string[]> {
+    // Make an HTTP GET request to the server to get a list of usernames
     return this.http.get<string[]>(`${this.apiUrl}search-user/${username}`);
   }
 }

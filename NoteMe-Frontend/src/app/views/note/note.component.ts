@@ -27,41 +27,39 @@ export class NoteComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private toastService: ToastService
   ) {
-    this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
+    this.noteId = this.activatedRoute.snapshot.paramMap.get('id'); // Get the note ID from the URL
   }
 
   ngOnInit() {
-    // Get the current user of the authentication service
+    // Get the current user's decoded token from the authentication service
     this.decodedToken = this.authService.getUser();
 
-    this.isEdit();
+    this.isEdit(); // Check if the component is in edit mode and populate note details if necessary
   }
 
   ngAfterViewInit() {
+    // Get all elements with "data-bs-toggle='tooltip'"
     const tooltipTriggerList = [].slice.call(
       document.querySelectorAll('[data-bs-toggle="tooltip"]')
     );
+
+    // Initialize Bootstrap tooltips for each tooltip element found
     tooltipTriggerList.map((tooltipTriggerEl: HTMLElement) => {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
   }
 
+  // Function to toggle the "favorite" flag of the note
   makeFavorite() {
-    if (this.noteIsFavorite == true) {
-      this.noteIsFavorite = false;
-    } else {
-      this.noteIsFavorite = true;
-    }
+    this.noteIsFavorite = !this.noteIsFavorite;
   }
 
+  // Function to toggle the "private" flag of the note
   makePrivate() {
-    if (this.noteIsPrivate == true) {
-      this.noteIsPrivate = false;
-    } else {
-      this.noteIsPrivate = true;
-    }
+    this.noteIsPrivate = !this.noteIsPrivate;
   }
 
+  // Function to save the note (either as an update or as a new note)
   saveNote() {
     const note: Note = {
       title: this.noteTitle,
@@ -72,17 +70,19 @@ export class NoteComponent implements OnInit, AfterViewInit {
     };
 
     if (this.noteId !== null) {
-      // update note
+      // Update an existing note
       this.noteService
         .updateNote(note, this.noteId, this.decodedToken._id)
         .subscribe(
           (res) => {
+            // Show a success toast notification
             this.toastService.initiate({
               title: 'Note updated',
               content: `Note updated successfully`,
             });
           },
           (error) => {
+            // Show an error toast notification if the note update fails
             this.toastService.initiate({
               title: 'Error',
               content: `Error during updating the note`,
@@ -90,16 +90,20 @@ export class NoteComponent implements OnInit, AfterViewInit {
           }
         );
     } else {
-      // new note
+      // Create a new note
       this.noteService.newNote(this.decodedToken._id, note).subscribe(
         (res) => {
+          // Show a success toast notification
           this.toastService.initiate({
             title: 'Note created',
             content: `Note created successfully`,
           });
+
+          // Navigate back to the dashboard after creating a new note
           this.router.navigate(['/dashboard']);
         },
         (error) => {
+          // Show an error toast notification if the note creation fails
           this.toastService.initiate({
             title: 'Error',
             content: `Error during creating the note`,
@@ -109,12 +113,15 @@ export class NoteComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // Function to check if the component is in edit mode and fetch note details if necessary
   isEdit() {
     if (this.noteId !== null) {
+      // Get the details of the note with the provided ID
       this.noteService
         .getNoteById(this.decodedToken._id, this.noteId)
         .subscribe(
           (note) => {
+            // Populate the component properties with the note details
             this.noteTitle = note.title;
             this.noteContent = note.content;
             this.noteColor = note.color;

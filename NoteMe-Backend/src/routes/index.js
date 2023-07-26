@@ -15,10 +15,10 @@ const {
 } = require("../validators/users");
 
 /**
- * Middleware para verificar el token de autorización.
- * @param {Object} req - Objeto de solicitud HTTP.
- * @param {Object} res - Objeto de respuesta HTTP.
- * @param {Function} next - Función para llamar al siguiente middleware o controlador.
+ * Middleware to verify the authorization token.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ * @param {Function} next - Function to call the next middleware or handler.
  */
 function verifyToken(req, res, next) {
   // Check if an authorization header was not provided
@@ -72,7 +72,7 @@ router.post("/users/signup", validateCreate, async (req, res) => {
   // Generate a token to login
   const token = jwt.sign(
     {
-      _id: newUser._id
+      _id: newUser._id,
     },
     process.env.JWT_SECRET
   );
@@ -102,7 +102,7 @@ router.post("/users/signin", async (req, res) => {
   // Generate a token to login
   const token = jwt.sign(
     {
-      _id: user._id
+      _id: user._id,
     },
     process.env.JWT_SECRET
   );
@@ -422,40 +422,52 @@ router.delete("/users/:userId/notes/:noteId", verifyToken, async (req, res) => {
   }
 });
 
+// Route to search users by their username
 router.get("/search-user/:username", verifyToken, async (req, res) => {
   const searchedUsername = req.params.username;
 
-  User.find({ username: { $regex: searchedUsername, $options: "i" } }, { username: 1 })
+  // Using a regular expression to find users that match the provided username
+  User.find(
+    { username: { $regex: searchedUsername, $options: "i" } },
+    { username: 1 }
+  )
     .limit(5)
     .then((result) => {
-      const usernames = result.map(user => user.username);
+      // Map the results to get only the usernames
+      const usernames = result.map((user) => user.username);
       res.json(usernames);
     })
     .catch((error) => {
+      // Handle errors if the search encounters any issues
       res.status(500).json({ error: "Error searching users" });
     });
 });
 
-
+// Route to retrieve public notes of a specific user
 router.get("/users/:username/public-notes", verifyToken, async (req, res) => {
   try {
     const username = req.params.username;
 
+    // Find the user with the given username and populate their public notes using the "Note" model
     const user = await User.findOne({ username }).populate({
       path: "notes._id",
       model: "Note",
     });
 
+    // If no user is found with the given username, return a 404 response
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Filter out private notes and retrieve only the public notes from the user
     const publicNotes = user.notes
       .filter((note) => !note._id.private)
       .map((note) => note._id);
 
+    // Send the public notes in the response
     res.json(publicNotes);
   } catch (error) {
+    // Handle any server error that may occur during the process
     res.status(500).json({ message: "Server error" });
   }
 });

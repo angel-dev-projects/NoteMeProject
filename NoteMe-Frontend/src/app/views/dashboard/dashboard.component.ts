@@ -27,13 +27,14 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Get the current user of the authentication service
+    // Get the current user's decoded token from the authentication service
     this.decodedToken = this.authService.getUser();
 
+    // Fetch the user's notes using the NoteService
     this.noteService.getNotes(this.decodedToken._id).subscribe(
       (res) => {
-        this.userNotes = res;
-        this.updatePageSlice();
+        this.userNotes = res; // Store the fetched notes in the userNotes array
+        this.updatePageSlice(); // Update the pageSlice array to display the initial page of notes
       },
       (error) => {
         console.log('Error fetching notes:', error);
@@ -41,28 +42,35 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  // Function to update the pageSlice array based on filters and pagination
   updatePageSlice() {
     let filteredNotes = this.userNotes;
-  
+
+    // Apply filters to the notes (showFavorites and showPrivates)
     if (this.showFavorites) {
       filteredNotes = filteredNotes.filter((note) => note.favorite);
     }
-  
+
     if (this.showPrivates) {
       filteredNotes = filteredNotes.filter((note) => note.private);
     }
-  
+
+    // Calculate the start and end index of the current page
     const startIndex = this.pageIndex * this.pageSize;
     const endIndex = startIndex + this.pageSize;
+
+    // Update the pageSlice array with the notes for the current page
     this.pageSlice = filteredNotes.slice(startIndex, endIndex);
   }
 
+  // Function to handle page change event (pagination)
   onPageChange(event: PageEvent) {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.updatePageSlice();
+    this.pageIndex = event.pageIndex; // Update the current page index
+    this.pageSize = event.pageSize; // Update the number of notes per page
+    this.updatePageSlice(); // Update the pageSlice array to display the new page of notes
   }
 
+  // Function to delete a note
   deleteNote(id_note: string | undefined) {
     Swal.fire({
       title: 'Delete note',
@@ -72,8 +80,10 @@ export class DashboardComponent implements OnInit {
       confirmButtonColor: '#000000',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Call the NoteService's deleteNote method to delete the note
         this.noteService.deleteNote(this.decodedToken._id, id_note).subscribe(
           (res) => {
+            // Remove the deleted note from the userNotes array and update the pageSlice array
             const index = this.userNotes.findIndex(
               (note) => note._id === id_note
             );
@@ -81,12 +91,15 @@ export class DashboardComponent implements OnInit {
               this.userNotes.splice(index, 1);
               this.updatePageSlice();
             }
+
+            // Show a success toast notification
             this.toastService.initiate({
               title: 'Note deleted',
               content: `Your note has been deleted successfully`,
             });
           },
           (error) => {
+            // Show an error toast notification if the note deletion fails
             this.toastService.initiate({
               title: 'Error',
               content: `Error deleting the note`,
