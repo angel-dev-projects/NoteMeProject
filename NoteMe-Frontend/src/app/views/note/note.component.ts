@@ -71,8 +71,6 @@ export class NoteComponent implements OnInit, AfterViewInit {
       private: this.noteIsPrivate,
     };
 
-    console.log(note);
-
     if (this.noteId !== null) {
       // update note
       this.noteService

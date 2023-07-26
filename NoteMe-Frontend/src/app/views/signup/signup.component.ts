@@ -40,10 +40,13 @@ export class SignupComponent implements OnInit {
     // Call the signUp method of the authentication service to register the user
     this.authService.signUp(user).subscribe(
       (res) => {
+        this.toastService.initiate({
+          title: 'Account created',
+          content: `Please, sign in to access`,
+        });
         this.router.navigate(['/signin']);
       },
       (err) => {
-        console.log(err);
         this.toastService.initiate({
           title: 'Error',
           content: err.error.errors[0].msg,

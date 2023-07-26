@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
   pageSlice: Note[] = [];
   pageSize = 9;
   pageIndex = 0;
+  showFavorites = false;
+  showPrivates = false;
 
   constructor(
     private noteService: NoteService,
@@ -40,9 +42,19 @@ export class DashboardComponent implements OnInit {
   }
 
   updatePageSlice() {
+    let filteredNotes = this.userNotes;
+  
+    if (this.showFavorites) {
+      filteredNotes = filteredNotes.filter((note) => note.favorite);
+    }
+  
+    if (this.showPrivates) {
+      filteredNotes = filteredNotes.filter((note) => note.private);
+    }
+  
     const startIndex = this.pageIndex * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pageSlice = this.userNotes.slice(startIndex, endIndex);
+    this.pageSlice = filteredNotes.slice(startIndex, endIndex);
   }
 
   onPageChange(event: PageEvent) {

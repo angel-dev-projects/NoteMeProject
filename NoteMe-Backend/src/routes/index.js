@@ -72,8 +72,7 @@ router.post("/users/signup", validateCreate, async (req, res) => {
   // Generate a token to login
   const token = jwt.sign(
     {
-      _id: newUser._id,
-      role: newUser.role,
+      _id: newUser._id
     },
     process.env.JWT_SECRET
   );
@@ -103,8 +102,7 @@ router.post("/users/signin", async (req, res) => {
   // Generate a token to login
   const token = jwt.sign(
     {
-      _id: user._id,
-      role: user.role,
+      _id: user._id
     },
     process.env.JWT_SECRET
   );
@@ -354,7 +352,7 @@ router.put("/users/:userId/notes/:noteId", verifyToken, async (req, res) => {
         content,
         color,
         favorite,
-        private
+        private,
       },
       { new: true }
     );
@@ -421,6 +419,44 @@ router.delete("/users/:userId/notes/:noteId", verifyToken, async (req, res) => {
     res.json({ message: "Note deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.get("/search-user/:username", verifyToken, async (req, res) => {
+  const searchedUsername = req.params.username;
+
+  User.find({ username: { $regex: searchedUsername, $options: "i" } }, { username: 1 })
+    .limit(5)
+    .then((result) => {
+      const usernames = result.map(user => user.username);
+      res.json(usernames);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error searching users" });
+    });
+});
+
+
+router.get("/users/:username/public-notes", verifyToken, async (req, res) => {
+  try {
+    const username = req.params.username;
+
+    const user = await User.findOne({ username }).populate({
+      path: "notes._id",
+      model: "Note",
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const publicNotes = user.notes
+      .filter((note) => !note._id.private)
+      .map((note) => note._id);
+
+    res.json(publicNotes);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 

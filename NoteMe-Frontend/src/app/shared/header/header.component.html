@@ -9,9 +9,19 @@
             <ng-container *ngIf="authService.loggedIn(); else loggedOut">
                 <div class="text-end d-flex align-items-center ms-auto">
                     <div class="collapse" id="searchForm">
-                        <input class="form-control me-2 bg-dark text-white" type="search" placeholder="Search user"
-                            aria-label="Search">
+                        <div>
+                            <input type="text" class="form-control" (ngModelChange)="searchUser($event)"
+                                [(ngModel)]="searchedUser" placeholder="Search user">
+                            <div class="results bg-dark">
+                                <ul>
+                                    <li *ngFor="let username of filteredUsers$ | async">
+                                        <a class="name text-decoration-none text-white" href="user/{{username}}">{{username}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
                     <button class="btn icon-btn me-2" data-bs-toggle="collapse" data-bs-target="#searchForm"
                         aria-expanded="false" aria-controls="searchForm">
                         <i class="bi bi-search"></i>

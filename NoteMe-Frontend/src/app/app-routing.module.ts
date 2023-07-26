@@ -7,6 +7,7 @@ import { AuthGuard } from './helpers/auth.guard';
 import { ProfileComponent } from './views/profile/profile.component';
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { UserComponent } from './views/user/user.component';
 
 const routes: Routes = [
   {
@@ -35,10 +36,17 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'change-password',
     component: ChangePasswordComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path:'user/:username',
+    component: UserComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

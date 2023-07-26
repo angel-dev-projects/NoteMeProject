@@ -1,0 +1,34 @@
+.results {
+  padding: 0;
+  margin-top: .5rem;
+  border-radius: 1rem;
+  z-index: 10;
+  position: fixed;
+}
+
+.results ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.results ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .5rem;
+  border-bottom: solid 1px rgba(241, 241, 241, 0.555);
+}
+
+.results ul li:hover .name {
+  background-color: #000000;
+}
+
+.results ul li:last-child {
+  border-bottom: transparent;
+}
+
+.results ul li .name {
+  padding: .35rem;
+  border-radius: 1rem;
+}

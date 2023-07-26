@@ -21,6 +21,13 @@ export class NoteService {
     return this.http.get<Note[]>(`${this.apiUrl}users/${id_user}/notes`);
   }
 
+  getPublicNotes(username: string): Observable<Note[]> {
+    // Make an HTTP GET request to the server to get all user's public notes
+    return this.http.get<Note[]>(
+      `${this.apiUrl}users/${username}/public-notes`
+    );
+  }
+
   newNote(id_user: string, note: Note) {
     // Make an HTTP POST request to the server to create an user's note
     return this.http.post(`${this.apiUrl}notes/${id_user}`, note);

@@ -28,4 +28,8 @@ export class UserService {
       passwords
     );
   }
+
+  searchUser(username: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}search-user/${username}`);
+  }
 }

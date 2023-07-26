@@ -22,6 +22,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { UserComponent } from './views/user/user.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ProfileComponent,
     ChangePasswordComponent,
     DashboardComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ColorPickerModule,
     MatInputModule,
     MatFormFieldModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSlideToggleModule
   ],
   providers: [
     AuthGuard,
